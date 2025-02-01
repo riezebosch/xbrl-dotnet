@@ -1,7 +1,6 @@
-using System;
+namespace XbrlDotNet;
 
-namespace Xbrl.ToObjects;
-
+[AttributeUsage(AttributeTargets.Class)]
 public class XbrlUnitAttribute(string id, string value) : Attribute
 {
     public string Id { get; } = id;

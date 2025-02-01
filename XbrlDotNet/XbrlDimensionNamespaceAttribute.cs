@@ -1,6 +1,4 @@
-using System;
-
-namespace Xbrl.ToObjects;
+namespace XbrlDotNet;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class XbrlDimensionNamespaceAttribute(string prefix, string uri) : Attribute

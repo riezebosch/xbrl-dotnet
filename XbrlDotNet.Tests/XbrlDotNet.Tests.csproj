@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <RootNamespace>Xbrl.ToObjects.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Xbrl.ToObjects\Xbrl.ToObjects.csproj" />
+      <ProjectReference Include="..\XbrlDotNet\XbrlDotNet.csproj" />
     </ItemGroup>
 
 </Project>

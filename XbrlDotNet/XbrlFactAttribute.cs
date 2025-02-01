@@ -1,6 +1,4 @@
-using System;
-
-namespace Xbrl.ToObjects;
+namespace XbrlDotNet;
 
 [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property)]
 public class XbrlFactAttribute : Attribute

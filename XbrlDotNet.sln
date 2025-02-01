@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbrl.ToObjects", "Xbrl.ToObjects\Xbrl.ToObjects.csproj", "{EDDE99B0-D8E1-4BF1-A321-96212D1CD86B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XbrlDotNet", "XbrlDotNet\XbrlDotNet.csproj", "{EDDE99B0-D8E1-4BF1-A321-96212D1CD86B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbrl.ToObjects.Tests", "Xbrl.ToObjects.Tests\Xbrl.ToObjects.Tests.csproj", "{493BA241-19F0-4E5F-90FC-6AC779902ACD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XbrlDotNet.Tests", "XbrlDotNet.Tests\XbrlDotNet.Tests.csproj", "{493BA241-19F0-4E5F-90FC-6AC779902ACD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
