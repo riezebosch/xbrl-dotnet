@@ -14,7 +14,7 @@ public static class FactTests
     [Fact]
     public static void AddDecimals()
     {
-        var report = XbrlDocument.For(new TestReportWith<ContextWithDecimals>(new ("name")));
+        var report = XbrlConverter.Convert(new TestReportWith<ContextWithDecimals>(new ("name")));
         
         var root = report
             .Element(Xbrli + "xbrl")!;
@@ -33,7 +33,7 @@ public static class FactTests
     [Fact]
     public static void AddUnitRef()
     {
-        var report = XbrlDocument.For(new TestReportWith<ContextWithUnitRef>(new("name")));
+        var report = XbrlConverter.Convert(new TestReportWith<ContextWithUnitRef>(new("name")));
         
         var root = report
             .Element(Xbrli + "xbrl")!;

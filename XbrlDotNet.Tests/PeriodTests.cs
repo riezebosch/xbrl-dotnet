@@ -14,7 +14,7 @@ public static class PeriodTests
     {
         var date = new DateTime(2020, 01, 01);
 
-        var report = XbrlDocument.For(new TestReport(new (date, date)));
+        var report = XbrlConverter.Convert(new TestReport(new (date, date)));
         
         using var scope = new AssertionScope(report.ToString());
         var root = report
@@ -37,7 +37,7 @@ public static class PeriodTests
     [Fact]
     public static void AddReportPeriod()
     {
-        var report = XbrlDocument.For(new TestReportWithPeriod(
+        var report = XbrlConverter.Convert(new TestReportWithPeriod(
             new DateTime(2020, 01, 01),
             new DateTime(2020, 01, 02),
             new()));

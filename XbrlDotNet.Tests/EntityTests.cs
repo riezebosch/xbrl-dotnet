@@ -9,7 +9,7 @@ public static class EntityTests
     [Fact]
     public static void AddContextEntity()
     {
-        var report = XbrlDocument.For(new TestReport(new ("12345600")));
+        var report = XbrlConverter.Convert(new TestReport(new ("12345600")));
         using var scope = new AssertionScope(report.ToString());
         var root = report
             .Element(Xbrli + "xbrl")!;

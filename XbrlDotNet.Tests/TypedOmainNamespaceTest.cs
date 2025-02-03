@@ -10,7 +10,7 @@ public static class TypedOmainNamespaceTest
     [Fact]
     public static void AddTypedDomainNamespace()
     {
-        var report = XbrlDocument.For(new TestReport(new("12345600")));
+        var report = XbrlConverter.Convert(new TestReport(new("12345600")));
         
         var root = report
             .Element(Xbrli + "xbrl")!;

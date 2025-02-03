@@ -1,11 +1,11 @@
 using System.Reflection;
+using Diwen.Xbrl.Xml;
 
-namespace XbrlDotNet;
+namespace XbrlDotNet.Converters;
 
-internal class Report(Diwen.Xbrl.Xml.Report report)
+internal class ReportConverter(Report report)
 {
-    public static Report For(Diwen.Xbrl.Xml.Report report) => new(report);
-    public void Add(object data)
+    public void Convert(object data)
     {
         FromAttributes(data);
         FromProperties(data);

@@ -1,13 +1,11 @@
 using System.Collections;
 using System.Linq;
 
-namespace XbrlDotNet;
+namespace XbrlDotNet.Converters;
 
-internal class Contexts(Diwen.Xbrl.Xml.Report report)
+internal class ContextsConverter(ContextConverter converter)
 {
-    public static Contexts For(Diwen.Xbrl.Xml.Report report) => new(report);
-
-    public void Add(object data)
+    public void Convert(object data)
     {
         var provider = new PropertyAttributesProvider();
         foreach (var property in data
@@ -20,19 +18,18 @@ internal class Contexts(Diwen.Xbrl.Xml.Report report)
         }
     }
 
-    private void AddContexts(object item)
+    private void AddContexts(object value)
     {
-        var c = Context.For(report);
-        if (item is IEnumerable children)
+        if (value is IEnumerable items)
         {
-            foreach (var child in children)
+            foreach (var item in items)
             {
-                c.Add(child);
+                AddContexts(item);
             }
         }
         else
         {
-            c.Add(item);
+            converter.Convert(value);
         }
     }
 }

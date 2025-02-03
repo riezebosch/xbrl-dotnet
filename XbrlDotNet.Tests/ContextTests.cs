@@ -12,7 +12,7 @@ public static class ContextTests
     {
         var client = new TestReportWith<ContextWithConstructorParameters>(new ContextWithConstructorParameters("12345600"));
         
-        var report = XbrlDocument.For(client);
+        var report = XbrlConverter.Convert(client);
         using var scope = new AssertionScope(report.ToString());
         var root = report
             .Element(Xbrli + "xbrl")!;
@@ -30,7 +30,7 @@ public static class ContextTests
             new ContextWithConstructorParameters("xxxxxxxx")
         ]);
         
-        var report = XbrlDocument.For(client);
+        var report = XbrlConverter.Convert(client);
         
         var root = report
             .Element(Xbrli + "xbrl")!;
@@ -55,7 +55,7 @@ public static class ContextTests
     {
         var client = new TestReportWith<ContextWithProperties>(new() { ChamberOfCommerceRegistrationNumber = "12345600" });
         
-        var report = XbrlDocument.For(client);
+        var report = XbrlConverter.Convert(client);
 
         var root = report
             .Element(Xbrli + "xbrl")!;
@@ -75,7 +75,7 @@ public static class ContextTests
     {
         var client = new TestReportWith<ContextNoAttributes>(new() { ChamberOfCommerceRegistrationNumber = "12345600" });
         
-        var report = XbrlDocument.For(client);
+        var report = XbrlConverter.Convert(client);
         
         var root = report
             .Element(Xbrli + "xbrl")!;

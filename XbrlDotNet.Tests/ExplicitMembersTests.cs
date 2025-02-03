@@ -12,7 +12,7 @@ public static class ExplicitMembersTests
     [Fact]
     public static void AddExplicitMembers()
     {
-        var report = XbrlDocument.For(new TestReport(new ()));
+        var report = XbrlConverter.Convert(new TestReport(new ()));
         using var scope = new AssertionScope(report.ToString());
         var root = report
             .Element(Xbrli + "xbrl")!;

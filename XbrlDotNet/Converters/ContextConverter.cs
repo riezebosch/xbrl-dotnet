@@ -1,13 +1,11 @@
 using System.Reflection;
 using Diwen.Xbrl.Xml;
 
-namespace XbrlDotNet;
+namespace XbrlDotNet.Converters;
 
-internal class Context(Diwen.Xbrl.Xml.Report report)
+internal class ContextConverter(Report report)
 {
-    public static Context For(Diwen.Xbrl.Xml.Report report) => new(report);
-
-    public void Add(object o)
+    public void Convert(object o)
     {
         report.Contexts.IdFormat = "c{0}d_0" + o.GetType().Name;
         var scenario = new Scenario(report);

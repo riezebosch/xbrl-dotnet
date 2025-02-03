@@ -12,7 +12,7 @@ public static class TypedMembersTests
     [Fact]
     public static void AddTypedMembers()
     {
-        var report = XbrlDocument.For(new TestReport(new ("OwnerName")));
+        var report = XbrlConverter.Convert(new TestReport(new ("OwnerName")));
         
         var root = report
             .Element(Xbrli + "xbrl")!;
