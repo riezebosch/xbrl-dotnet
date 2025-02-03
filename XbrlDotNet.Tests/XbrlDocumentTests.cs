@@ -1,7 +1,10 @@
+using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using XbrlDotNet;
+using Xunit;
 
 namespace Xbrl.ToObjects.Tests;
 
