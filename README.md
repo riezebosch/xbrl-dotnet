@@ -24,5 +24,5 @@ record SomeContext(
 Generate the report:
 
 ```csharp
-var xbrl = XbrlDocument.For(new SomeReport(DateTime.Now, DateTime.Now, new SomeContext(...), ...);
+var xbrl = XbrlConverter.Convert(new SomeReport(DateTime.Now, DateTime.Now, new SomeContext(...), ...);
 ```
