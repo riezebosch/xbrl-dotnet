@@ -1,6 +1,3 @@
-using System.Xml;
-using System.Xml.Linq;
-using Diwen.Xbrl.Xml;
 using XbrlDotNet.Converters;
 
 namespace XbrlDotNet;

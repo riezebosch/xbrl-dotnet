@@ -1,53 +1,70 @@
-using System.Reflection;
-using Diwen.Xbrl.Xml;
-
 namespace XbrlDotNet.Converters;
 
 internal class ReportConverter(Report report)
 {
     public void Convert(object data)
     {
-        FromAttributes(data);
-        FromProperties(data);
+        ConvertAttributes(data);
+        ConvertProperties(data);
     }
 
-    private void FromAttributes(object data)
+    private void ConvertAttributes(object data)
     {
-        foreach (var attribute in data.GetType().GetCustomAttributes())
+        var attributes = data.GetType().GetCustomAttributes();
+        foreach (var attribute in attributes)
         {
-            switch (attribute)
+            ApplyAttribute(attribute);
+        }
+    }
+
+    private void ApplyAttribute(Attribute attribute)
+    {
+        switch (attribute)
+        {
+            case XbrlTypedDomainNamespaceAttribute a:
+                report.SetTypedDomainNamespace(a.Prefix, a.Uri);
+                break;
+            case XbrlDimensionNamespaceAttribute a:
+                report.SetDimensionNamespace(a.Prefix, a.Uri);
+                break;
+            case XbrlUnitAttribute a:
+                report.Units.Add(a.Id, a.Value);
+                break;
+        }
+    }
+
+    private void ConvertProperties(object data)
+    {
+        var properties = data.GetType().GetProperties();
+        foreach (var property in properties)
+        {
+            var value = property.GetValue(data);
+            if (value != null)
             {
-                case XbrlTypedDomainNamespaceAttribute a:
-                    report.SetTypedDomainNamespace(a.Prefix, a.Uri);
-                    break;
-                case XbrlDimensionNamespaceAttribute a:
-                    report.SetDimensionNamespace(a.Prefix, a.Uri);
-                    break;
-                case XbrlUnitAttribute a:
-                    report.Units.Add(a.Id, a.Value);
-                    break;
+                ApplyPropertyAttributes(property, value);
             }
         }
     }
 
-    private void FromProperties(object data)
+    private void ApplyPropertyAttributes(PropertyInfo property, object value)
     {
-        var provider = new PropertyAttributesProvider();
-        foreach (var property in data.GetType().GetProperties())
+        var attributes = new PropertyAttributesProvider().For(property);
+        foreach (var attribute in attributes)
         {
-            var value = property.GetValue(data)!;
-            foreach (var attr in provider.For(property))
-            {
-                switch (attr)
-                {
-                    case XbrlPeriodStartAttribute:
-                        report.Period.StartDate = (DateTime)value;
-                        break;
-                    case XbrlPeriodEndAttribute:
-                        report.Period.EndDate = (DateTime)value;
-                        break;
-                }
-            }
+            ApplyPropertyAttribute(attribute, value);
+        }
+    }
+
+    private void ApplyPropertyAttribute(Attribute attribute, object value)
+    {
+        switch (attribute)
+        {
+            case XbrlPeriodStartAttribute:
+                report.Period.StartDate = (DateTime)value;
+                break;
+            case XbrlPeriodEndAttribute:
+                report.Period.EndDate = (DateTime)value;
+                break;
         }
     }
 }

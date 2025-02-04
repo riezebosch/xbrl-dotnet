@@ -1,21 +1,26 @@
-using System.Collections;
-using System.Linq;
-
 namespace XbrlDotNet.Converters;
 
-internal class ContextsConverter(ContextConverter converter)
+internal class ContextsConverter(ContextConverter context)
 {
     public void Convert(object data)
     {
-        var provider = new PropertyAttributesProvider();
-        foreach (var property in data
-                     .GetType()
-                     .GetProperties()
-                     .Where(x => provider.For(x).OfType<XbrlContextAttribute>().Any()))
+        var properties = GetContextProperties(data);
+        foreach (var property in properties)
         {
-            var value = property.GetValue(data)!;
-            AddContexts(value);
+            var value = property.GetValue(data);
+            if (value != null)
+            {
+                AddContexts(value);
+            }
         }
+    }
+
+    private IEnumerable<PropertyInfo> GetContextProperties(object data)
+    {
+        var provider = new PropertyAttributesProvider();
+        return data.GetType()
+                   .GetProperties()
+                   .Where(p => provider.For(p).OfType<XbrlContextAttribute>().Any());
     }
 
     private void AddContexts(object value)
@@ -29,7 +34,7 @@ internal class ContextsConverter(ContextConverter converter)
         }
         else
         {
-            converter.Convert(value);
+            context.Convert(value);
         }
     }
 }
