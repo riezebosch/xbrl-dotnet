@@ -65,6 +65,9 @@ internal class ReportConverter(Report report)
             case XbrlPeriodEndAttribute:
                 report.Period.EndDate = (DateTime)value;
                 break;
+            case XbrlPeriodInstantAttribute:
+                report.Period.Instant = (DateTime)value;
+                break;
         }
     }
 }
