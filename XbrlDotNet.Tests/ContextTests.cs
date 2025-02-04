@@ -81,4 +81,21 @@ public static class ContextTests
             .Element(Xbrli + "xbrl")!;
         root.Descendants().Should().NotContain(x => x.Value == "12345600");
     }
+
+    record ContextName;
+    
+    [Fact]
+    public static void ContextNameTest()
+    {
+        var client = new TestReportWith<ContextName>(new ());
+        
+        var report = XbrlConverter.Convert(client);
+        using var scope = new AssertionScope(report.ToString());
+        var root = report
+            .Element(Xbrli + "xbrl")!;
+        root.Should().HaveElement(Xbrli + "context")
+            .Which
+            .Should()
+            .HaveAttributeWithValue("id", "c0d_0ContextName");
+    }
 }

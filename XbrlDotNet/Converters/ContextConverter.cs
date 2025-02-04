@@ -5,6 +5,8 @@ internal class ContextConverter(Report report)
     public void Convert(object data)
     {
         var scenario = CreateScenario(data);
+        report.Contexts.IdFormat = "c{0}d_0" + data.GetType().Name;
+
         var context = report.CreateContext(scenario);
         ApplyPropertyAttributes(context, data);
     }
