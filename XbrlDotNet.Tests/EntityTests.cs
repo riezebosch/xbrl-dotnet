@@ -1,15 +1,25 @@
+using System.Xml.Serialization;
+using Diwen.Xbrl.Xml;
+
 namespace XbrlDotNet.Tests;
 
 public static class EntityTests
 {
-    private record TestContext([XbrlEntity("http://www.kvk.nl/kvk-id")]string KvkId);
+    private record KvkEntity(string Id)
+    {
+        public static implicit operator Entity(KvkEntity instance) => new("http://www.kvk.nl/kvk-id", instance.Id);
+    }
 
-    private record TestReport([XbrlContext] TestContext TestContext);
+    private record TestContext(string KvkId) : IContext
+    {
+        Entity IContext.Entity => new KvkEntity(KvkId);
+        Period? IContext.Period => null;
+    }
 
     [Fact]
     public static void AddContextEntity()
     {
-        var report = XbrlConverter.Convert(new TestReport(new ("12345600")));
+        var report = XbrlConverter.Convert(new TestReport(new TestContext("12345600")));
         using var scope = new AssertionScope(report.ToString());
         var root = report
             .Element(Xbrli + "xbrl")!;
