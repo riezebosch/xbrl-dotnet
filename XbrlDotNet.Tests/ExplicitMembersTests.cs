@@ -8,7 +8,6 @@ public static class ExplicitMembersTests
     private record TestContext : IContext
     {
         Entity IContext.Entity => new();
-        Period? IContext.Period => null;
     }
 
     [XbrlTypedDomainNamespace("frc-vt-dm", "https://www.sbrnexus.nl/vt17/frc/20240131/dictionary/frc-vt-domains")]
