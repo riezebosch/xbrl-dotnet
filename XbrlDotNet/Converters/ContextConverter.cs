@@ -9,8 +9,14 @@ internal class ContextConverter(Report report)
 
         var context = report.CreateContext(scenario);
         context.Entity = data.Entity;
-        context.Period = data.Period ?? report.Period;
-        
+
+        context.Period = data switch
+        {
+            IPeriod period => new Period(period.PeriodStart, period.PeriodEnd),
+            IPeriodInstant instant => new Period(instant.Period),
+            _ => context.Period
+        };
+
         ConvertProperties(context, data);
     }
 

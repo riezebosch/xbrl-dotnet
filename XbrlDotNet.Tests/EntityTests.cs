@@ -1,4 +1,3 @@
-using System.Xml.Serialization;
 using Diwen.Xbrl.Xml;
 
 namespace XbrlDotNet.Tests;
@@ -13,7 +12,6 @@ public static class EntityTests
     private record TestContext(string KvkId) : IContext
     {
         Entity IContext.Entity => new KvkEntity(KvkId);
-        Period? IContext.Period => null;
     }
 
     [Fact]

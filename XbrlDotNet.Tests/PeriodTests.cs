@@ -4,10 +4,9 @@ namespace XbrlDotNet.Tests;
 
 public static class PeriodTests
 {
-    private record ContextWithPeriod(DateTime Start, DateTime End) : IContext
+    private record ContextWithPeriod(DateTime PeriodStart, DateTime PeriodEnd) : IContext.WithPeriod
     {
         Entity IContext.Entity => new();
-        Period IContext.Period => new (Start, End);
     }
 
     [Fact]
@@ -30,10 +29,9 @@ public static class PeriodTests
             .Should().HaveValue("2020-01-01");
     }
     
-    private record ContextWithPeriodInstant(DateTime Period) : IContext
+    private record ContextWithPeriodInstant(DateTime Period) : IContext.WithInstant
     {
         Entity IContext.Entity => new();
-        Period IContext.Period => new(Period);
     }
 
     [Fact]
@@ -55,13 +53,11 @@ public static class PeriodTests
     private record ContextWithNoPeriod([Concept("x", "x")] string Something) : IContext
     {
         Entity IContext.Entity => new();
-        Period? IContext.Period => null;
     }
 
-    private record TestReportWithPeriod(DateTime Start, DateTime End, ContextWithNoPeriod TestContext) : IReport
+    private record TestReportWithPeriod(DateTime PeriodStart, DateTime PeriodEnd, ContextWithNoPeriod TestContext) : IReport.WithPeriod
     {
         public IEnumerable<IContext> Contexts => [TestContext];
-        Period IReport.Period => new(Start, End);
     }
 
     [Fact]
@@ -85,10 +81,9 @@ public static class PeriodTests
             .Should().HaveValue("2020-01-02");
     }
     
-    private record TestReportWithPeriodInstant(DateTime Period, ContextWithNoPeriod TestContext) : IReport
+    private record TestReportWithPeriodInstant(DateTime Period, ContextWithNoPeriod TestContext) : IReport.WithInstant
     {
         public IEnumerable<IContext> Contexts => [TestContext];
-        Period IReport.Period => new(Period);
     }
 
     [Fact]

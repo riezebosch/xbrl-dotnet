@@ -8,8 +8,7 @@ public class ContextTests(ITestOutputHelper output)
     private record ContextWithConstructorParameters([NlCommonData] string ChamberOfCommerceRegistrationNumber): IContext
     {
         Entity IContext.Entity => new();
-        Period? IContext.Period => null;
-    };
+    }
 
     [Fact]
     public void AddContextWithConstructorParameters()
@@ -57,7 +56,6 @@ public class ContextTests(ITestOutputHelper output)
         public string? ChamberOfCommerceRegistrationNumber { get; set; }
 
         Entity IContext.Entity => new();
-        Period? IContext.Period => null;
     }
 
     [Fact]
@@ -79,7 +77,6 @@ public class ContextTests(ITestOutputHelper output)
     record ContextName : IContext
     {
         Entity IContext.Entity => new();
-        Period? IContext.Period => null;
     }
 
     [Fact]

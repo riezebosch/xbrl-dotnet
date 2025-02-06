@@ -9,7 +9,6 @@ public static class TypedMembersTests
         string OwnersTypedMember) : IContext
     {
         Entity IContext.Entity => new();
-        Period? IContext.Period => null;
     }
 
     [XbrlTypedDomainNamespace("frc-vt-dm", "https://www.sbrnexus.nl/vt17/frc/20240131/dictionary/frc-vt-domains")]

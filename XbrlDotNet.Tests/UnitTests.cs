@@ -9,7 +9,6 @@ public static class UnitsTests
     ) : IContext
     {
         Entity IContext.Entity => new();
-        Period? IContext.Period => null;
     }
     
     [Fact]
