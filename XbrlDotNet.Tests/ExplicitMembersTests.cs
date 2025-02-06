@@ -7,7 +7,7 @@ public static class ExplicitMembersTests
     [XbrlExplicitMember("frc-vt-dim:ClientAxis", "frc-vt-dm:ClientMember")]
     private record TestContext : IContext
     {
-        Entity IContext.Entity => new();
+        IEntity IContext.Entity => TestEntity.Dummy;
     }
 
     [XbrlTypedDomainNamespace("frc-vt-dm", "https://www.sbrnexus.nl/vt17/frc/20240131/dictionary/frc-vt-domains")]
