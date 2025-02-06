@@ -6,7 +6,7 @@ public static class PeriodTests
 {
     private record ContextWithPeriod(DateTime PeriodStart, DateTime PeriodEnd) : IContext.WithPeriod
     {
-        Entity IContext.Entity => new();
+        IEntity IContext.Entity => TestEntity.Dummy;
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public static class PeriodTests
     
     private record ContextWithPeriodInstant(DateTime Period) : IContext.WithInstant
     {
-        Entity IContext.Entity => new();
+        IEntity IContext.Entity => TestEntity.Dummy;
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public static class PeriodTests
 
     private record ContextWithNoPeriod([Concept("x", "x")] string Something) : IContext
     {
-        Entity IContext.Entity => new();
+        IEntity IContext.Entity => TestEntity.Dummy;
     }
 
     private record TestReportWithPeriod(DateTime PeriodStart, DateTime PeriodEnd, ContextWithNoPeriod TestContext) : IReport.WithPeriod

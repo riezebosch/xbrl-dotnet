@@ -8,7 +8,7 @@ public static class DecimalsTests
         [NlCommonData] [Decimals.INF] string FamilyName
     ) : IContext
     {
-        Entity IContext.Entity => new();
+        IEntity IContext.Entity => TestEntity.Dummy;
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public static class DecimalsTests
         [NlCommonData] [Decimals(2)] string FamilyName
     ) : IContext
     {
-        Entity IContext.Entity => new();
+        IEntity IContext.Entity => TestEntity.Dummy;
     }
 
     [Fact]

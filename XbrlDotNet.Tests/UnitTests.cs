@@ -8,7 +8,7 @@ public static class UnitsTests
         [NlCommonData] [Units.Euro] string FamilyName
     ) : IContext
     {
-        Entity IContext.Entity => new();
+        IEntity IContext.Entity => TestEntity.Dummy;
     }
     
     [Fact]
