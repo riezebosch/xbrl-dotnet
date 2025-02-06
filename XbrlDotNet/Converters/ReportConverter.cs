@@ -4,7 +4,13 @@ internal class ReportConverter(Report report)
 {
     public void Convert(IReport data)
     {
-        report.Period = data.Period;
+        report.Period = data switch
+        {
+            IPeriod period => new Period(period.PeriodStart, period.PeriodEnd),
+            IPeriodInstant instant => new Period(instant.Period),
+            _ => report.Period
+        };
+
         ApplyAttributes(data);
     }
 

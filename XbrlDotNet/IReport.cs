@@ -2,6 +2,8 @@ namespace XbrlDotNet;
 
 public interface IReport
 {
-    Period? Period => null;
     IEnumerable<IContext> Contexts { get; }
+
+    public interface WithPeriod : IReport, IPeriod;
+    public interface WithInstant : IReport, IPeriodInstant;
 }

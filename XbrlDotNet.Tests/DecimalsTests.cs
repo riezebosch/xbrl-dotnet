@@ -9,7 +9,6 @@ public static class DecimalsTests
     ) : IContext
     {
         Entity IContext.Entity => new();
-        Period? IContext.Period => null;
     }
 
     [Fact]
@@ -32,7 +31,6 @@ public static class DecimalsTests
     ) : IContext
     {
         Entity IContext.Entity => new();
-        Period? IContext.Period => null;
     }
 
     [Fact]
