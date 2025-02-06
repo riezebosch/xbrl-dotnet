@@ -7,7 +7,7 @@ public class ContextTests(ITestOutputHelper output)
 {
     private record ContextWithConstructorParameters([NlCommonData] string ChamberOfCommerceRegistrationNumber): IContext
     {
-        Entity IContext.Entity => new();
+        IEntity IContext.Entity => TestEntity.Dummy;
     }
 
     [Fact]
@@ -55,7 +55,7 @@ public class ContextTests(ITestOutputHelper output)
         [NlCommonData]
         public string? ChamberOfCommerceRegistrationNumber { get; set; }
 
-        Entity IContext.Entity => new();
+        IEntity IContext.Entity => TestEntity.Dummy;
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public class ContextTests(ITestOutputHelper output)
     
     record ContextName : IContext
     {
-        Entity IContext.Entity => new();
+        IEntity IContext.Entity => TestEntity.Dummy;
     }
 
     [Fact]

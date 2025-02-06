@@ -1,17 +1,10 @@
-using Diwen.Xbrl.Xml;
-
 namespace XbrlDotNet.Tests;
 
 public static class EntityTests
 {
-    private record KvkEntity(string Id)
-    {
-        public static implicit operator Entity(KvkEntity instance) => new("http://www.kvk.nl/kvk-id", instance.Id);
-    }
-
     private record TestContext(string KvkId) : IContext
     {
-        Entity IContext.Entity => new KvkEntity(KvkId);
+        IEntity IContext.Entity => new TestEntity(KvkId);
     }
 
     [Fact]
