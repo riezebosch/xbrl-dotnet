@@ -1,8 +1,8 @@
 namespace XbrlDotNet;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class XbrlTypedDomainNamespaceAttribute(string prefix, string uri) : Attribute
+public class XbrlTypedDomainNamespaceAttribute(string prefix, string uri) : Attribute, IReportAttribute
 {
-    public string Prefix { get; } = prefix;
-    public string Uri { get; } = uri;
+    void IReportAttribute.Update(Report report) => 
+        report.SetTypedDomainNamespace(prefix, uri);
 }

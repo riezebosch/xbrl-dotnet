@@ -2,27 +2,30 @@ namespace XbrlDotNet.Converters;
 
 internal class ContextConverter(Report report)
 {
-    public void Convert(object data)
+    public void Convert(IContext data)
     {
         var scenario = CreateScenario(data);
         report.Contexts.IdFormat = "c{0}d_0" + data.GetType().Name;
 
         var context = report.CreateContext(scenario);
-        ApplyPropertyAttributes(context, data);
+        context.Entity = data.Entity;
+        context.Period = data.Period ?? report.Period;
+        
+        ConvertProperties(context, data);
     }
 
     private Scenario CreateScenario(object data)
     {
         var scenario = new Scenario(report);
-        var explicitMembers = data.GetType().GetCustomAttributes<XbrlExplicitMemberAttribute>();
-        foreach (var member in explicitMembers)
+        foreach (var member in data.GetType().GetCustomAttributes<XbrlExplicitMemberAttribute>())
         {
-            scenario.AddExplicitMember(member.Dimension, member.Value);
+            member.Update(scenario);
         }
+
         return scenario;
     }
 
-    private void ApplyPropertyAttributes(Context context, object data)
+    private void ConvertProperties(Context context, object data)
     {
         var properties = data.GetType().GetProperties();
         foreach (var property in properties)
@@ -30,42 +33,37 @@ internal class ContextConverter(Report report)
             var value = property.GetValue(data);
             if (value != null)
             {
-                ApplyPropertyAttributes(context, property, value);
+                ConvertProperty(context, property, value);
             }
         }
     }
 
-    private void ApplyPropertyAttributes(Context context, PropertyInfo property, object value)
+    private void ConvertProperty(Context context, PropertyInfo property, object value)
     {
+        var f = new Fact
+        {
+            Context = context,
+            Value = value.ToString()
+        };
+
         var attributes = new PropertyAttributesProvider().For(property);
         foreach (var attribute in attributes)
         {
-            ApplyPropertyAttribute(context, property, attribute, value);
-        }
-    }
-
-    private void ApplyPropertyAttribute(Context context, PropertyInfo property, Attribute attribute, object value)
-    {
-        switch (attribute)
-        {
-            case XbrlFactAttribute a:
-                report.AddFact(context, $"{a.Metric}:{property.Name}", a.UnitRef, a.Decimals, value?.ToString());
-                break;
-            case XbrlTypedMemberAttribute a:
-                context.Scenario.AddTypedMember(a.Dimension, a.Domain, value?.ToString());
-                break;
-            case XbrlEntityAttribute a:
-                context.Entity = new Entity(a.Scheme, value?.ToString());
-                break;
-            case XbrlPeriodStartAttribute:
-                context.Period.StartDate = (DateTime)value!;
-                break;
-            case XbrlPeriodEndAttribute:
-                context.Period.EndDate = (DateTime)value!;
-                break;
-            case XbrlPeriodInstantAttribute:
-                context.Period.Instant = (DateTime)value;
-                break;
+            switch (attribute)
+            {
+                case ConceptAttribute c:
+                    c.Update(f, report, property.Name);
+                    break;
+                case DecimalsAttribute d:
+                    d.Update(f);
+                    break;
+                case UnitAttribute u:
+                    u.Update(f);
+                    break;
+                case XbrlTypedMemberAttribute t:
+                    t.Update(context, property.Name, value);
+                    break;
+            }
         }
     }
 }

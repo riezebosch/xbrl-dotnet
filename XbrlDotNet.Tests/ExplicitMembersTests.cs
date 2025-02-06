@@ -1,13 +1,22 @@
+using Diwen.Xbrl.Xml;
+
 namespace XbrlDotNet.Tests;
 
 public static class ExplicitMembersTests
 {
     [XbrlExplicitMember("frc-vt-dim:ClientAxis", "frc-vt-dm:ClientMember")]
-    private record TestContext;
-    
+    private record TestContext : IContext
+    {
+        Entity IContext.Entity => new();
+        Period? IContext.Period => null;
+    }
+
     [XbrlTypedDomainNamespace("frc-vt-dm", "https://www.sbrnexus.nl/vt17/frc/20240131/dictionary/frc-vt-domains")]
     [XbrlDimensionNamespace("frc-vt-dim", "https://www.sbrnexus.nl/vt17/frc/20240131/dictionary/frc-vt-axes")]
-    private record TestReport([XbrlContext] TestContext TestContext);
+    private record TestReport(TestContext TestContext) : IReport
+    {
+        public IEnumerable<IContext> Contexts => [TestContext];
+    }
 
     [Fact]
     public static void AddExplicitMembers()

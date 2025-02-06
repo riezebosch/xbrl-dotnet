@@ -4,17 +4,20 @@ namespace XbrlDotNet;
 
 public static class XbrlConverter
 {
-    public static XDocument Convert(object data)
+    public static XDocument Convert(IReport report)
     {
-        var report = new Report();
+        var target = new Report();
 
-        var r = new ReportConverter(report);
-        r.Convert(data);
+        var r = new ReportConverter(target);
+        r.Convert(report);
         
-        var c = new ContextsConverter(new ContextConverter(report));
-        c.Convert(data);
+        var context = new ContextConverter(target);
+        foreach (var c in report.Contexts)
+        {
+            context.Convert(c);
+        }
 
-        return report.ToXDocument();
+        return target.ToXDocument();
     }
 
     private static XDocument ToXDocument(this Report report)
