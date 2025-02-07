@@ -1,13 +1,13 @@
 # xbrl-dotnet
 
-## Report
+## Taxonomy
 
-A report is literally nothing more than a collection of contexts and some metadata.
+A taxonomy is a collection of contexts and some metadata.
 
 ```csharp
 [XbrlDimensionNamespace(prefix, uri)]
 [XbrlTypedDomainNamespace(prefix, uri)]
-record SomeReport(
+record SomeTaxonomy(
     DateTime Start,
     DateTime End,
     public IEnumerable<IContext> Contexts =>
@@ -20,7 +20,7 @@ record SomeReport(
 
 ## Context
 
-A context is a set of defined concepts, an identity and period (optional).
+A context is a set of defined concepts, an identity and a period (optional).
 
 ```csharp
 [XbrlExplicitMember(dimension, value)]
@@ -45,7 +45,7 @@ record SomeContext(...) : IContext.WithInstant
 
 ## Concepts
 
-Define the concepts for your taxonomy:
+Define concepts for your taxonomy:
 
 ```csharp
 class NlCommonDataAttribute() : 
@@ -53,6 +53,8 @@ class NlCommonDataAttribute() :
 ```
 
 ## Entity
+
+Define entities to be used on contexts:
 
 ```csharp
 class YourEntity(string value) : IEntity
@@ -62,8 +64,11 @@ class YourEntity(string value) : IEntity
 }
 ```
 
-Generate the report:
+## Instance
+
+Generate the report for an instance:
 
 ```csharp
-var xbrl = XbrlConverter.Convert(new SomeReport(DateTime.Now, DateTime.Now, new SomeContext(...), ...);
+var intance = new SomeTaxonomy(DateTime.Now, DateTime.Now, new SomeContext(...), ...)
+var xbrl = XbrlConverter.Convert();
 ```
