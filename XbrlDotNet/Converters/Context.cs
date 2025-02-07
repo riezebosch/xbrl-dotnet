@@ -1,6 +1,6 @@
 namespace XbrlDotNet.Converters;
 
-internal class ContextConverter(Report report)
+internal class Context(Report report)
 {
     public void Convert(IContext data)
     {
@@ -10,11 +10,11 @@ internal class ContextConverter(Report report)
         var context = report.CreateContext(scenario);
         context.Entity = new Entity(data.Entity.Scheme, data.Entity.Value);
 
-        SetContextPeriod(data, context);
+        SetContextPeriod(context, data);
         ConvertProperties(context, data);
     }
 
-    private static void SetContextPeriod(IContext data, Context context) =>
+    private static void SetContextPeriod(Diwen.Xbrl.Xml.Context context, IContext data) =>
         context.Period = data switch
         {
             IPeriod period => new Period(period.PeriodStart, period.PeriodEnd),
@@ -33,7 +33,7 @@ internal class ContextConverter(Report report)
         return scenario;
     }
 
-    private void ConvertProperties(Context context, object data)
+    private void ConvertProperties(Diwen.Xbrl.Xml.Context context, object data)
     {
         var properties = data.GetType().GetProperties();
         foreach (var property in properties)
@@ -46,7 +46,7 @@ internal class ContextConverter(Report report)
         }
     }
 
-    private void ConvertProperty(Context context, PropertyInfo property, object value)
+    private void ConvertProperty(Diwen.Xbrl.Xml.Context context, PropertyInfo property, object value)
     {
         var f = new Fact
         {

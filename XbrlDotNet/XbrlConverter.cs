@@ -1,18 +1,19 @@
 using XbrlDotNet.Converters;
+using Context = XbrlDotNet.Converters.Context;
 
 namespace XbrlDotNet;
 
 public static class XbrlConverter
 {
-    public static XDocument Convert(IReport report)
+    public static XDocument Convert(ITaxonomy taxonomy)
     {
         var target = new Report();
 
-        var r = new ReportConverter(target);
-        r.Convert(report);
+        var r = new Taxonomy(target);
+        r.Convert(taxonomy);
         
-        var context = new ContextConverter(target);
-        foreach (var c in report.Contexts)
+        var context = new Context(target);
+        foreach (var c in taxonomy.Contexts)
         {
             context.Convert(c);
         }

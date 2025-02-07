@@ -1,20 +1,11 @@
-using Diwen.Xbrl.Xml;
-
 namespace XbrlDotNet.Tests;
 
 public static class DecimalsTests
 {
-    private record ContextWithInf(
-        [NlCommonData] [Decimals.INF] string FamilyName
-    ) : IContext
-    {
-        IEntity IContext.Entity => TestEntity.Dummy;
-    }
-
     [Fact]
     public static void AddInf()
     {
-        var report = XbrlConverter.Convert(new TestReport(new ContextWithInf("name")));
+        var report = XbrlConverter.Convert(new Taxonomy(new ContextWithInf("name")));
 
         using var scope = new AssertionScope(report.ToString());
         var root = report
@@ -26,17 +17,10 @@ public static class DecimalsTests
             .And.HaveAttributeWithValue("decimals", "INF");
     }
 
-    private record ContextWithDecimals(
-        [NlCommonData] [Decimals(2)] string FamilyName
-    ) : IContext
-    {
-        IEntity IContext.Entity => TestEntity.Dummy;
-    }
-
     [Fact]
     public static void AddDecimals()
     {
-        var report = XbrlConverter.Convert(new TestReport(new ContextWithDecimals("name")));
+        var report = XbrlConverter.Convert(new Taxonomy(new ContextWithDecimals("name")));
 
         using var scope = new AssertionScope(report.ToString());
         var root = report
@@ -46,5 +30,19 @@ public static class DecimalsTests
             .Should()
             .HaveValue("name")
             .And.HaveAttributeWithValue("decimals", "2");
+    }
+
+    private record ContextWithInf(
+        [NlCommonData] [Decimals.INF] string FamilyName
+    ) : IContext
+    {
+        IEntity IContext.Entity => Entity.Dummy;
+    }
+
+    private record ContextWithDecimals(
+        [NlCommonData] [Decimals(2)] string FamilyName
+    ) : IContext
+    {
+        IEntity IContext.Entity => Entity.Dummy;
     }
 }

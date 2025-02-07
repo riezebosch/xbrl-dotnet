@@ -1,17 +1,17 @@
 namespace XbrlDotNet.Converters;
 
-internal class ReportConverter(Report report)
+internal class Taxonomy(Report report)
 {
-    public void Convert(IReport data)
+    public void Convert(ITaxonomy instance)
     {
-        report.Period = data switch
+        report.Period = instance switch
         {
             IPeriod period => new Period(period.PeriodStart, period.PeriodEnd),
             IPeriodInstant instant => new Period(instant.Period),
             _ => report.Period
         };
 
-        ApplyAttributes(data);
+        ApplyAttributes(instance);
     }
 
     private void ApplyAttributes(object data)
