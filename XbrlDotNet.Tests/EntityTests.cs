@@ -2,14 +2,10 @@ namespace XbrlDotNet.Tests;
 
 public static class EntityTests
 {
-    private record TestContext([XbrlEntity("http://www.kvk.nl/kvk-id")]string KvkId);
-
-    private record TestReport([XbrlContext] TestContext TestContext);
-
     [Fact]
     public static void AddContextEntity()
     {
-        var report = XbrlConverter.Convert(new TestReport(new ("12345600")));
+        var report = XbrlConverter.Convert(new Taxonomy(new TestContext("12345600")));
         using var scope = new AssertionScope(report.ToString());
         var root = report
             .Element(Xbrli + "xbrl")!;
@@ -18,5 +14,10 @@ public static class EntityTests
             .Should().HaveElement(Xbrli + "identifier").Which
             .Should().HaveValue("12345600")
             .And.HaveAttribute("scheme", "http://www.kvk.nl/kvk-id");
+    }
+
+    private record TestContext(string KvkId) : IContext
+    {
+        IEntity IContext.Entity => new Entity(KvkId);
     }
 }
