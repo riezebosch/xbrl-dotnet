@@ -7,7 +7,7 @@ public static class PeriodTests
     {
         var date = new DateTime(2020, 01, 01);
 
-        var report = XbrlConverter.Convert(new Taxonomy(new ContextWithPeriod(date, date)));
+        var report = XbrlConverter.Convert(new Taxonomy(new ContextPeriodDuration(date, date)));
 
         using var scope = new AssertionScope(report.ToString());
         var root = report
@@ -27,7 +27,7 @@ public static class PeriodTests
     {
         var date = new DateTime(2020, 01, 01);
 
-        var report = XbrlConverter.Convert(new Taxonomy(new ContextWithPeriodInstant(date)));
+        var report = XbrlConverter.Convert(new Taxonomy(new ContextPeriodInstant(date)));
 
         using var scope = new AssertionScope(report.ToString());
         var root = report
@@ -41,7 +41,7 @@ public static class PeriodTests
     [Fact]
     public static void AddReportPeriod()
     {
-        var report = XbrlConverter.Convert(new TestReportWithPeriod(
+        var report = XbrlConverter.Convert(new TestReportPeriodDuration(
             new DateTime(2020, 01, 01),
             new DateTime(2020, 01, 02),
             new ContextWithNoPeriod("x")));
@@ -62,7 +62,7 @@ public static class PeriodTests
     [Fact]
     public static void AddReportPeriodInstant()
     {
-        var report = XbrlConverter.Convert(new TestReportWithPeriodInstant(
+        var report = XbrlConverter.Convert(new TestReportPeriodPeriodInstant(
             new DateTime(2020, 01, 01),
             new ContextWithNoPeriod("x")));
 
@@ -75,12 +75,12 @@ public static class PeriodTests
             .Should().HaveValue("2020-01-01");
     }
 
-    private record ContextWithPeriod(DateTime PeriodStart, DateTime PeriodEnd) : IContext.WithPeriod
+    private record ContextPeriodDuration(DateTime Start, DateTime End) : IContext.PeriodDuration
     {
         IEntity IContext.Entity => Entity.Dummy;
     }
 
-    private record ContextWithPeriodInstant(DateTime Period) : IContext.WithInstant
+    private record ContextPeriodInstant(DateTime Instant) : IContext.PeriodInstant
     {
         IEntity IContext.Entity => Entity.Dummy;
     }
@@ -90,13 +90,13 @@ public static class PeriodTests
         IEntity IContext.Entity => Entity.Dummy;
     }
 
-    private record TestReportWithPeriod(DateTime PeriodStart, DateTime PeriodEnd, ContextWithNoPeriod TestContext)
-        : ITaxonomy.WithPeriod
+    private record TestReportPeriodDuration(DateTime Start, DateTime End, ContextWithNoPeriod TestContext)
+        : ITaxonomy.PeriodDuration
     {
         public IEnumerable<IContext> Contexts => [TestContext];
     }
 
-    private record TestReportWithPeriodInstant(DateTime Period, ContextWithNoPeriod TestContext) : ITaxonomy.WithInstant
+    private record TestReportPeriodPeriodInstant(DateTime Instant, ContextWithNoPeriod TestContext) : ITaxonomy.PeriodInstant
     {
         public IEnumerable<IContext> Contexts => [TestContext];
     }

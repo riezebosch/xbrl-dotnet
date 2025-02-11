@@ -2,7 +2,7 @@
 
 ## Taxonomy
 
-A taxonomy is a collection of contexts and some metadata.
+A taxonomy is a collection of contexts and metadata.
 
 ```csharp
 [XbrlDimensionNamespace(prefix, uri)]
@@ -15,7 +15,7 @@ record SomeTaxonomy(
         new SomeContext(...)
     ];
     ...
-) : IReport.WithPeriod;
+) : ITaxonomy.PeriodDuration;
 ```
 
 ## Context
@@ -31,13 +31,13 @@ record SomeContext(
     IEntity IContext.Entity => new YourEntity(...);
 }
 
-record SomeContext(...) : IContext.WithPeriod
+record SomeContext(...) : IContext.PeriodDuration
 {
     IEntity IContext.Entity => new YourEntity(...);
 }
 
 
-record SomeContext(...) : IContext.WithInstant
+record SomeContext(...) : IContext.PeriodInstant
 {
     IEntity IContext.Entity => new YourEntity(...);
 }
@@ -66,9 +66,9 @@ class YourEntity(string value) : IEntity
 
 ## Instance
 
-Generate the report for an instance:
+Generate an instance report:
 
 ```csharp
 var intance = new SomeTaxonomy(DateTime.Now, DateTime.Now, new SomeContext(...), ...)
-var xbrl = XbrlConverter.Convert();
+var xbrl = XbrlConverter.Convert(instance);
 ```

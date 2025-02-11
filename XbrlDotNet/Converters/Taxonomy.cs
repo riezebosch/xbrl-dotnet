@@ -6,8 +6,8 @@ internal class Taxonomy(Report report)
     {
         report.Period = instance switch
         {
-            IPeriod period => new Period(period.PeriodStart, period.PeriodEnd),
-            IPeriodInstant instant => new Period(instant.Period),
+            IPeriodDuration period => new Period(period.Start, period.End),
+            IPeriodInstant instant => new Period(instant.Instant),
             _ => report.Period
         };
 
