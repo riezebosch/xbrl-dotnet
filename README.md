@@ -1,21 +1,30 @@
 # xbrl-dotnet
 
+## Namespaces
+
+Everyting in XBRL is contained in a namespace, define the used namespaces first:
+
+```csharp
+public static readonly XNamespace FrcVtDim = "https://www.sbrnexus.nl/vt17/frc/20240131/dictionary/frc-vt-axes";
+...
+```
+
 ## Taxonomy
 
 A taxonomy is a collection of contexts and metadata.
 
 ```csharp
-[XbrlDimensionNamespace(prefix, uri)]
-[XbrlTypedDomainNamespace(prefix, uri)]
 record SomeTaxonomy(
     DateTime Start,
     DateTime End,
-    public IEnumerable<IContext> Contexts =>
-    [
-        new SomeContext(...)
-    ];
+    IContext Context1,
+    IContext Context2,
     ...
-) : ITaxonomy.PeriodDuration;
+) : ITaxonomy.PeriodDuration
+{
+    NamespacePrefix ITaxonomy.Domain => new("frc-vt-dm", FrcVtDm);
+    NamespacePrefix ITaxonomy.Dimension => new("frc-vt-dim", FrcVtDim);
+}
 ```
 
 ## Context
@@ -23,29 +32,28 @@ record SomeTaxonomy(
 A context is a set of defined concepts, an identity and a period (optional).
 
 ```csharp
-[XbrlExplicitMember(dimension, value)]
-record SomeContext(
-    [NlCommonDataAttribute] string Something
-    ) : IContext
+record SomeContext([NlCommonDataAttribute] string Something) : IContext
 {
     IEntity IContext.Entity => new YourEntity(...);
+    ExplicitMember[] IContext.ExplicitMembers => [];
+    TypedMember[] IContext.TypedMembers => [];
 }
 
-record SomeContext(...) : IContext.PeriodDuration
+record SomeContext(DateTime Start, DateTime End, ...) : IContext.PeriodDuration
 {
-    IEntity IContext.Entity => new YourEntity(...);
+    ...
 }
 
 
-record SomeContext(...) : IContext.PeriodInstant
+record SomeContext(DateTime Instant, ...) : IContext.PeriodInstant
 {
-    IEntity IContext.Entity => new YourEntity(...);
+    ...
 }
 ```
 
 ## Concepts
 
-Define concepts for your taxonomy:
+Define concepts for the taxonomy:
 
 ```csharp
 class NlCommonDataAttribute() : 
@@ -54,7 +62,7 @@ class NlCommonDataAttribute() :
 
 ## Entity
 
-Define entities to be used on contexts:
+Define the entity/entities to be used on contexts:
 
 ```csharp
 class YourEntity(string value) : IEntity
@@ -64,7 +72,27 @@ class YourEntity(string value) : IEntity
 }
 ```
 
-## Instance
+## Dimensions
+
+Define typed members:
+
+```csharp
+TypedMember[] IContext.TypedMembers =>
+[
+    new (FrcVtDm + "OwnersTypedMember", FrcVtDim + "OwnersAxis", SomeValue)
+];
+```
+
+Define explicit members:
+
+```csharp
+ExplicitMember[] IContext.ExplicitMembers => 
+[
+    new(FrcVtDm + "ClientMember", FrcVtDim + "ClientAxis")
+];
+```
+
+# Instance
 
 Generate an instance report:
 

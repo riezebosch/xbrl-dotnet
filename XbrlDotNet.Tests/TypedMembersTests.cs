@@ -1,3 +1,5 @@
+using XbrlDotNet.Dimensions;
+
 namespace XbrlDotNet.Tests;
 
 public static class TypedMembersTests
@@ -5,7 +7,7 @@ public static class TypedMembersTests
     [Fact]
     public static void AddTypedMembers()
     {
-        var report = XbrlConverter.Convert(new TestTaxonomy(new TestContext("OwnerName")));
+        var report = XbrlConverter.Convert(new Taxonomy(new TestContext("OwnerName")));
 
         using var scope = new AssertionScope(report.ToString);
         var root = report
@@ -18,17 +20,13 @@ public static class TypedMembersTests
             .Should().HaveValue("OwnerName");
     }
 
-    private record TestContext(
-        [XbrlTypedMember("frc-vt-dim:OwnersAxis", "frc-vt-dm")]
-        string OwnersTypedMember) : IContext
+    private record TestContext(string OwnersTypedMember) : IContext
     {
         IEntity IContext.Entity => Entity.Dummy;
-    }
-
-    [XbrlTypedDomainNamespace("frc-vt-dm", "https://www.sbrnexus.nl/vt17/frc/20240131/dictionary/frc-vt-domains")]
-    [XbrlDimensionNamespace("frc-vt-dim", "https://www.sbrnexus.nl/vt17/frc/20240131/dictionary/frc-vt-axes")]
-    private record TestTaxonomy(TestContext TestContext) : ITaxonomy
-    {
-        public IEnumerable<IContext> Contexts => [TestContext];
+        TypedMember[] IContext.TypedMembers =>
+        [
+            new (FrcVtDm + "OwnersTypedMember", FrcVtDim + "OwnersAxis", OwnersTypedMember)
+        ];
+        ExplicitMember[] IContext.ExplicitMembers => [];
     }
 }

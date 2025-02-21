@@ -1,4 +1,4 @@
-namespace XbrlDotNet;
+namespace XbrlDotNet.Facts;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
 public class ConceptAttribute(string prefix, string ns) : Attribute

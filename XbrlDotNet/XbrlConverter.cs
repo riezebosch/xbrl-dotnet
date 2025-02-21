@@ -7,18 +7,38 @@ public static class XbrlConverter
 {
     public static XDocument Convert(ITaxonomy taxonomy)
     {
-        var target = new Report();
+        var report = new Report();
 
-        var r = new Taxonomy(target);
-        r.Convert(taxonomy);
-        
-        var context = new Context(target);
-        foreach (var c in taxonomy.Contexts)
+        ConvertTaxonomy(taxonomy, report);
+        ConvertContexts(taxonomy, report);
+
+        return report.ToXDocument();
+    }
+
+    private static void ConvertTaxonomy(ITaxonomy taxonomy, Report target)
+    {
+        var converter = new Taxonomy(target);
+        converter.Convert(taxonomy);
+    }
+
+    private static void ConvertContexts(ITaxonomy taxonomy, Report target)
+    {
+        var converter = new Context(target);
+        var contexts = taxonomy
+            .GetType()
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Select(x => x.GetValue(taxonomy))
+            .ToList();
+            
+        foreach (var c in contexts.OfType<IContext>())
         {
-            context.Convert(c);
+            converter.Convert(c);
         }
-
-        return target.ToXDocument();
+        
+        foreach (var c in contexts.OfType<IEnumerable<IContext>>().SelectMany(x => x))
+        {
+            converter.Convert(c);
+        }
     }
 
     private static XDocument ToXDocument(this Report report)

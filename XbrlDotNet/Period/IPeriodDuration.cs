@@ -1,4 +1,4 @@
-namespace XbrlDotNet;
+namespace XbrlDotNet.Period;
 
 public interface IPeriodDuration
 {
