@@ -1,3 +1,6 @@
+using XbrlDotNet.Dimensions;
+using XbrlDotNet.Facts;
+
 namespace XbrlDotNet.Tests;
 
 public static class DecimalsTests
@@ -33,10 +36,12 @@ public static class DecimalsTests
     }
 
     private record ContextWithInf(
-        [NlCommonData] [Decimals.INF] string FamilyName
+        [NlCommonData] [Inf] string FamilyName
     ) : IContext
     {
         IEntity IContext.Entity => Entity.Dummy;
+        ExplicitMember[] IContext.ExplicitMembers => [];
+        TypedMember[] IContext.TypedMembers => [];
     }
 
     private record ContextWithDecimals(
@@ -44,5 +49,7 @@ public static class DecimalsTests
     ) : IContext
     {
         IEntity IContext.Entity => Entity.Dummy;
+        ExplicitMember[] IContext.ExplicitMembers => [];
+        TypedMember[] IContext.TypedMembers => [];
     }
 }

@@ -1,3 +1,5 @@
+using XbrlDotNet.Dimensions;
+
 namespace XbrlDotNet.Tests;
 
 public static class EntityTests
@@ -19,5 +21,7 @@ public static class EntityTests
     private record TestContext(string KvkId) : IContext
     {
         IEntity IContext.Entity => new Entity(KvkId);
+        ExplicitMember[] IContext.ExplicitMembers => [];
+        TypedMember[] IContext.TypedMembers => [];
     }
 }

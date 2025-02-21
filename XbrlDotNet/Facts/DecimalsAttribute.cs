@@ -1,4 +1,4 @@
-namespace XbrlDotNet;
+namespace XbrlDotNet.Facts;
 
 [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property)]
 public class DecimalsAttribute(string value) : Attribute

@@ -1,3 +1,5 @@
+using XbrlDotNet.Facts;
+
 namespace XbrlDotNet.Tests.TestTaxonomy;
 
 public class NlCommonDataAttribute() :
