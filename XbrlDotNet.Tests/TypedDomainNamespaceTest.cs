@@ -1,6 +1,6 @@
 namespace XbrlDotNet.Tests;
 
-public static class TypedOmainNamespaceTest
+public static class TypedDomainNamespaceTest
 {
     [XbrlTypedDomainNamespace("nl-cd", "http://www.nltaxonomie.nl/nt17/sbr/20220301/dictionary/nl-common-data")]
     private record TestContext([XbrlFact(Metric = "nl-cd")] string ChamberOfCommerceRegistrationNumber);
